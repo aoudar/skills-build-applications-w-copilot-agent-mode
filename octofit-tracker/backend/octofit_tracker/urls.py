@@ -17,12 +17,20 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from octofit_tracker import views
+import os
 
 router = DefaultRouter()
 router.register(r'users', views.UserViewSet, basename='user')
 router.register(r'teams', views.TeamViewSet, basename='team')
 router.register(r'activities', views.ActivityViewSet, basename='activity')
 router.register(r'workouts', views.WorkoutViewSet, basename='workout')
+
+# Helper to get Codespace URL
+def get_codespace_url():
+    codespace_name = os.environ.get('CODESPACE_NAME')
+    if codespace_name:
+        return f"https://{codespace_name}-8000.app.github.dev"
+    return "http://localhost:8000"
 
 urlpatterns = [
     path('admin/', admin.site.urls),
